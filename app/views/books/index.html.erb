@@ -1,11 +1,6 @@
-<% @books.each do |book| %>
-  <div>
-    <ul>
-      <li><strong>Title</strong> : <%= book[:title] %></li>
-      <li><strong>Author</strong> : <%= book[:author] %></li>
-      <li><strong>Publisher</strong> : <%= book[:publisher] %></li>
-      <li><strong>Genre</strong> : <%= book[:genre] %></li>
-    </ul>
-  </div>
-<% end %>
+<section>
+  <h1>These are <%= @books.length %> books below</h1>
+
+  <%= vue_component(name: 'books',props: { books: @books }) %>
+</section>
 

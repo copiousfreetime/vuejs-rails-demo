@@ -41,3 +41,16 @@ rule is:
     so the are all available dynamically in the vue-rails pack to [dynamically
     access
     them](https://github.com/copiousfreetime/vuejs-rails-demo/blob/main/app/javascript/packs/vue-rails.js#L39)
+
+## Test it out
+
+```
+git clone git@github.com:copiousfreetime/vuejs-rails-demo.git
+cd vuejs-rails-demo
+# change to ruby 2.7.1 according to your rbenv / chruby / etc
+bundle install 
+bundle exec rails db:create
+bundle exec rails yarn install
+bundle exec rails s
+```
+

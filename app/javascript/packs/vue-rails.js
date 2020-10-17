@@ -9,6 +9,8 @@ var VueRailsUJS = {
 
   COMPONENTS: ALL_COMPONENTS,
 
+  // Find all the nodes in the document that have `data-vue-id` attributes
+  //
   findDOMNodes: function() {
     const classNameAttr = VueRailsUJS.VUE_ID_ATTR;
     var parent = document;
@@ -16,22 +18,23 @@ var VueRailsUJS = {
     return parent.querySelectorAll(selector);
   },
 
+  // For each of the nodes in the document that come from findDOMNodes
+  //
+  //  - create an instance of that vue component an initialize it with the props
+  //    from data-vue-props
+  //  - mount that instance - which won't do anything
+  //  - create a Vue instance attached to the "data" node and append the
+  //    component to it
+  //
   mountComponents: function() {
-    console.log("[vue-rails] " + ` searching for components to mount`)
     const ujs = VueRailsUJS
     const nodes = ujs.findDOMNodes();
 
-    for (var i = 0; i < nodes.length; ++i) {
-      var node = nodes[i];
-      console.log("[vue-rails] : ", node)
+    for (const node of nodes) {
       var componentName = node.getAttribute(ujs.COMPONENT_NAME_ATTR);
       var componentId = node.getAttribute(ujs.VUE_ID_ATTR);
       var propsJson = node.getAttribute(ujs.PROPS_ATTR);
       var props = propsJson && JSON.parse(propsJson);
-
-      if (console && console.log) {
-        console.log("[vue-rails] " + ` rendering ${componentName}[${componentId}]`)
-      }
 
       const ComponentClass = Vue.component(componentName, ujs.COMPONENTS[componentName])
       const instance = new ComponentClass({propsData: props})

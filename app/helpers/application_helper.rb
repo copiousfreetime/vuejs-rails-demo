@@ -1,4 +1,11 @@
 module ApplicationHelper
+
+  # Create a <div> that has the following attributes
+  #
+  # data-vue-id - this is a uniq id of this particular component
+  # data-vue-component - the name of this component registered in vue
+  # data-vue-props - the hash of props to pass to the component
+  #
   def vue_component(name:, props: {}, options:{camelize_props: true})
     if options.fetch(:camelize_props, true) then
       props = camelize_props(props)

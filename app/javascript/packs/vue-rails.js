@@ -13,7 +13,7 @@
 
 
 import Vue from 'vue/dist/vue.esm'
-import books from '../components/books/'
+import { ALL_COMPONENTS } from '../components'
 
 var VueRailsUJS = {
   COMPONENT_NAME_ATTR: 'data-vue-component',
@@ -72,7 +72,7 @@ var VueRailsUJS = {
 
       const v = new Vue({
         el: '#' + componentId,
-        components: { books }
+        components: ALL_COMPONENTS,
       })
     }
   }

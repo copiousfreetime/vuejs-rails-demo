@@ -1,24 +1,41 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a test of how to do an integration of vuejs with rails in a similar
+manner to what react-rails does.
 
-Things you may want to cover:
+## Protocol
 
-* Ruby version
+Rails creates a `div` with 3 attributes:
 
-* System dependencies
+  * data-vue-id - a unique id so that multiple components on the same page can be addressed separately
+  * data-vue-component - the registered Vue component name
+  * data-vue-props - the hash of props jsonified
 
-* Configuration
+This is all done in the `vue_component` application helper
 
-* Database creation
+  * https://github.com/copiousfreetime/vuejs-rails-demo/blob/main/app/helpers/application_helper.rb#L9
 
-* Database initialization
+On the javascript / webpack side, there is a pack named `vue-rails` - this needs
+to be [referenced in the
+layout](https://github.com/copiousfreetime/vuejs-rails-demo/blob/main/app/views/layouts/application.html.erb#L10)
+and it will load watch the pages as they load and look for html divs that have
+`data-vue-id` attributes.
 
-* How to run the test suite
+When those divs are found - it creates an instance of the component that is
+registered with Vue with the value at`data-vue-component`, deserializes the json
+in `data-vue-props` and passes that to the component, then creates vue instance
+that attaches to the div that has all the `data-vue-` attributes and appends the
+component as a child of the vue instance.
 
-* Services (job queues, cache servers, search engines, etc.)
+## Convention
 
-* Deployment instructions
+The big convention that makes this work is the layout of the vue components. The
+rule is:
 
-* ...
+* all components are within the [webpack source
+    directory](https://github.com/copiousfreetime/vuejs-rails-demo/tree/main/app/javascript) - which is where they
+    woudl all go anyway.
+* They are imported and [aggregated in a top level structure](https://github.com/copiousfreetime/vuejs-rails-demo/blob/main/app/javascript/components.js)
+    so the are all available dynamically in the vue-rails pack to [dynamically
+    access
+    them](https://github.com/copiousfreetime/vuejs-rails-demo/blob/main/app/javascript/packs/vue-rails.js#L39)

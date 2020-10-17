@@ -1,16 +1,3 @@
-// The above code uses Vue without the compiler, which means you cannot
-// use Vue to target elements in your existing html templates. You would
-// need to always use single file components.
-// To be able to target elements in your existing html/erb templates,
-// comment out the above code and uncomment the below
-// Add <%= javascript_pack_tag 'hello_vue' %> to your layout
-// Then add this markup to your html template:
-//
-// <div id='hello'>
-//   {{message}}
-//   <app></app>
-// </div>
-
 
 import Vue from 'vue/dist/vue.esm'
 import { ALL_COMPONENTS } from '../components'
@@ -22,36 +9,17 @@ var VueRailsUJS = {
 
   COMPONENTS: ALL_COMPONENTS,
 
-  findDOMNodes: function(searchSelector) {
-    const classNameAttr = VueRailsUJS.VUE_ID_ATTR
-
-    var selector, parent;
-
-    switch (typeof searchSelector) {
-      case 'undefined':
-        selector = '[' + classNameAttr + ']';
-        parent = document;
-        break;
-      case 'object':
-        selector = '[' + classNameAttr + ']';
-        parent = searchSelector;
-        break;
-      case 'string':
-        selector = searchSelector + '[' + classNameAttr + '], ' +
-                   searchSelector + ' [' + classNameAttr + ']';
-        parent = document;
-        break
-      default:
-        break;
-    }
-
+  findDOMNodes: function() {
+    const classNameAttr = VueRailsUJS.VUE_ID_ATTR;
+    var parent = document;
+    var selector = `[${classNameAttr}]`;
     return parent.querySelectorAll(selector);
   },
 
-  mountComponents: function(searchSelector) {
+  mountComponents: function() {
     console.log("[vue-rails] " + ` searching for components to mount`)
     const ujs = VueRailsUJS
-    const nodes = ujs.findDOMNodes(searchSelector);
+    const nodes = ujs.findDOMNodes();
 
     for (var i = 0; i < nodes.length; ++i) {
       var node = nodes[i];

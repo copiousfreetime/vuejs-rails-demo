@@ -17,11 +17,13 @@ import { ALL_COMPONENTS } from '../components'
 
 var VueRailsUJS = {
   COMPONENT_NAME_ATTR: 'data-vue-component',
-  ID_ATTR: 'id',
+  VUE_ID_ATTR: 'data-vue-id',
   PROPS_ATTR: 'data-vue-props',
 
+  COMPONENTS: ALL_COMPONENTS,
+
   findDOMNodes: function(searchSelector) {
-    const classNameAttr = VueRailsUJS.COMPONENT_NAME_ATTR
+    const classNameAttr = VueRailsUJS.VUE_ID_ATTR
 
     var selector, parent;
 
@@ -55,7 +57,7 @@ var VueRailsUJS = {
       var node = nodes[i];
       console.log("[vue-rails] : ", node)
       var componentName = node.getAttribute(ujs.COMPONENT_NAME_ATTR);
-      var componentId = node.getAttribute(ujs.ID_ATTR);
+      var componentId = node.getAttribute(ujs.VUE_ID_ATTR);
       var propsJson = node.getAttribute(ujs.PROPS_ATTR);
       var props = propsJson && JSON.parse(propsJson);
 
@@ -63,17 +65,15 @@ var VueRailsUJS = {
         console.log("[vue-rails] " + ` rendering ${componentName}[${componentId}]`)
       }
 
-      const element = document.createElement(componentName)
-      element.setAttribute('id', componentId)
-      for (const [key, value] of Object.entries(props)) {
-        element.setAttribute(key, JSON.stringify(value))
-      }
-      node.appendChild(element)
+      const ComponentClass = Vue.component(componentName, ujs.COMPONENTS[componentName])
+      const instance = new ComponentClass({propsData: props})
+      instance.$mount()
 
       const v = new Vue({
-        el: '#' + componentId,
-        components: ALL_COMPONENTS,
+        el: `[${ujs.VUE_ID_ATTR}=${componentId}]`,
+        components: ujs.COMPONENTS,
       })
+      v.$el.appendChild(instance.$el)
     }
   }
 }

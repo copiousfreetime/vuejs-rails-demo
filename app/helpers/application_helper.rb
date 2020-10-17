@@ -5,9 +5,9 @@ module ApplicationHelper
     end
 
     html_options = options.reverse_merge(:data => {})
-    html_options[:id] = "vue-#{SecureRandom.uuid}"
 
     html_options[:data].tap do |data|
+      data[:vue_id] = "vue-#{SecureRandom.uuid}"
       data[:vue_component] = name
       data[:vue_props] = (props.is_a?(String) ? props : props.to_json)
     end

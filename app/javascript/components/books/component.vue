@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul v-for="(book, index) in parsedBooks">
+    <ul v-for="(book, index) in books">
       <li>{{ index }}</li>
       <li><strong>Title</strong> : {{ book.title }}</li>
       <li><strong>Author</strong> : {{ book.author }}</li>
